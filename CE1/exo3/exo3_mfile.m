@@ -13,9 +13,9 @@ T = toeplitz(u,r);
 
 %apply u to system, mesure y
 
-G = tf([-1 2],[1 1.85 4]);
+G = tf([-1 2],[1 1.85 4]); %% change tgis
 
-y = lsim(G,u,tt);
+y = lsim(G,u,tt);%% change tgis
 
 %simin.time = tt;
 %simin.signals.values = u;
