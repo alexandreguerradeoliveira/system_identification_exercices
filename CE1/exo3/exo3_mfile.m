@@ -22,7 +22,7 @@ y = lsim(G,u,tt);
 
 %out_sim = sim('exo3.slx');
 
-%y = out_sim.simout.Data;
+%%%%%y = out_sim.simout.Data;
 
 %plot(tt,y)
 %figure
