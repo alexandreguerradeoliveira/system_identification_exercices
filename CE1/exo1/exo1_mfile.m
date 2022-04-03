@@ -19,13 +19,7 @@ simin.signals.values = values;
 
 % call the simulation
 out_step = sim('exo1.slx',tt(end));
-
-% plot data
-plot(out_step.simout.Time,out_step.simout.Data);
-title("Step response of the system");
-xlabel("time [sec]")
-ylabel("y(t)")
-
+out_step_wn = sim('exo1_without_noise.slx'); %without noise
 
 
 %% do the same for the impulse response
@@ -37,13 +31,7 @@ simin.signals.values = values_impulse;
 
 % simulate in simulink
 out_impulse = sim('exo1.slx');
-
-% plot data
-figure
-plot(out_impulse.simout.Time,out_impulse.simout.Data);
-title("Impulse response of the system");
-xlabel("time [sec]")
-ylabel("y(t)")
+out_impulse_wn = sim('exo1_without_noise.slx'); 
 
 
 %% is Te enough ?
@@ -58,13 +46,29 @@ f_N = 10*fb; % heuristic: nyquist frequency is 10 times the bandwidth
 
 fe = 2*f_N; % nyquist theorem
 
-Te_max = 1/fe % maximum sampling time
-
-%figure
-%bode(G)
+Te_max = 1/fe; % maximum sampling time
+disp('Te maximum = ');
+disp(Te_max);
 
 % we can see that the natural frequency of the system is way smaller than
 % than half of the sampling frequency, so Nyquists/Shannon theorem is
 % verified thus the sampling time is reasonable.
 
+
+%% Comparison plots
+
+figure
+plot(out_step.simout.Time,out_step.simout.Data, out_step_wn.simout.Time,out_step_wn.simout.Data);
+title("step response of G(s) with and without noise");
+xlabel("time [sec]")
+ylabel("y(t)")
+legend('Step response with noise','Step response without noise')
+
+
+figure
+plot(out_impulse.simout.Time,out_impulse.simout.Data, out_impulse_wn.simout.Time,out_impulse_wn.simout.Data);
+title("Impulse response of G(s)");
+xlabel("time [sec]")
+ylabel("y(t)")
+legend('Impulse response with noise','Impulse response without noise')
 
