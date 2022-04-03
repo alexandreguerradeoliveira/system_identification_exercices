@@ -10,7 +10,7 @@ simin.time = tt;
 simin.signals.values = Uprbs;
 
 % call the simulation
-out_step = sim('exo4.slx');
+out_step = sim('exo4.slx',tt(end));
 tt_sim = out_step.simout.Time;
 y_sim = out_step.simout.Data;
 
@@ -37,7 +37,9 @@ R_yu_matlab = R_yu_matlab((end+1)/2:end);
 R_uu_matlab = R_uu_matlab((end+1)/2:end);
 
 U_toeplitz_matlab =  toeplitz(R_uu_matlab);
-g_k_matlab = inv(U_toeplitz_matlab)*R_yu_matlab;
+%g_k_matlab = inv(U_toeplitz_matlab)*R_yu_matlab;
+g_k_matlab =  inv(U_toeplitz_matlab)*R_yu_matlab;
+
 
 %% exact reponse of the system
 G = tf([-1 2],[1 1.85 4]);

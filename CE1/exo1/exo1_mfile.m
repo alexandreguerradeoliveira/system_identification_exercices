@@ -18,7 +18,7 @@ simin.time = tt;
 simin.signals.values = values;
 
 % call the simulation
-out_step = sim('exo1.slx');
+out_step = sim('exo1.slx',tt(end));
 
 % plot data
 plot(out_step.simout.Time,out_step.simout.Data);
@@ -58,7 +58,7 @@ f_N = 10*fb; % heuristic: nyquist frequency is 10 times the bandwidth
 
 fe = 2*f_N; % nyquist theorem
 
-Te = 1/fe % maximum sampling time
+Te_max = 1/fe % maximum sampling time
 
 %figure
 %bode(G)

@@ -15,7 +15,7 @@ y_nonoise = lsim(G,u,tt);
 %simulate system with simulink
 simin.time = tt;
 simin.signals.values = u;
-out_sim = sim('exo3.slx');
+out_sim = sim('exo3.slx',tt(end));
 y = out_sim.simout.Data;
 
 % % plot the outputs
