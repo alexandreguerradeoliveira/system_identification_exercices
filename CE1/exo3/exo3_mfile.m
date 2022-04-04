@@ -18,13 +18,13 @@ simin.signals.values = u;
 out_sim = sim('exo3.slx',tt(end));
 y = out_sim.simout.Data;
 
-%% deconvolution method (finite impulse response)
+%% deconvolution method [finite impulse response]
 K = 70;
 
 % create asymetric toeplitz matrix
 r = zeros(1,K);
 r(1) = u(1);
-T = toeplitz(u,r);
+T = toeplitz(u,r);%U_k in the course
 
 % solve least squares
 g_fir = inv((T')*(T))*((T')*y);
@@ -33,7 +33,7 @@ g_fir = inv((T')*(T))*((T')*y);
 sys_d = c2d(G,Te);
 [y_d,t_d] = impulse(sys_d*Te);
 
-%% part 5
+%% part 5 [Regularisation]
 lambda = 2;
 
 r = zeros(size(u));
@@ -51,7 +51,7 @@ plot(t_d,y_d)
 plot(tt(1:K),g_reg(1:K))
 
 title("Impulse response")
-legend("Indentified response (FIR)","Ideal response (no saturation, no noise)","Indentified response (Regularisation)")
+legend("Indentified response (FIR)","Ideal response (no saturation, no noise)","Identified response (Regularisation)")
 xlabel("time [s]")
 ylabel("impulse response [arbitrary units]")
 
