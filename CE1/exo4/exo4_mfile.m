@@ -15,10 +15,10 @@ tt_sim = out_step.simout.Time;
 y_sim = out_step.simout.Data;
 
 % pick only the first period of the signal
-K = 2^(8)-1; 
-Uprbs = Uprbs(1:K);
-y_sim = y_sim(1:K);
-tt_sim = tt_sim(1:K);
+M = 2^(8)-1; 
+Uprbs = Uprbs(7*M + 1:8*M); %demander si il faut vraiment prendre la derniere periode (so no ss)
+y_sim = y_sim(7*M + 1:8*M);
+tt_sim = tt_sim(1:M);
 
 R_uu_intcor = intcor(Uprbs,Uprbs);
 R_yu_intcor = intcor(y_sim,Uprbs);
@@ -37,7 +37,6 @@ R_yu_matlab = R_yu_matlab((end+1)/2:end);
 R_uu_matlab = R_uu_matlab((end+1)/2:end);
 
 U_toeplitz_matlab =  toeplitz(R_uu_matlab);
-%g_k_matlab = inv(U_toeplitz_matlab)*R_yu_matlab;
 g_k_matlab =  inv(U_toeplitz_matlab)*R_yu_matlab;
 
 
