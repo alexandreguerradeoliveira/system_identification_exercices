@@ -18,12 +18,6 @@ simin.signals.values = u;
 out_sim = sim('exo3.slx',tt(end));
 y = out_sim.simout.Data;
 
-% % plot the outputs
-% % hold on
-% % plot(tt,y)
-% % plot(tt,y_nonoise)
-% % legend("noisy system","noise-less system")
-
 %% deconvolution method (finite impulse response)
 K = 70;
 
