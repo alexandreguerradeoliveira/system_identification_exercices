@@ -47,22 +47,56 @@ G = tf([-1 2],[1 1.85 4]);
 G = c2d(G,Te);
 %% 3
 
-window = hann(2*N);
-window = window(size(window,1)/2 + 1:end);
+M = 300;
+window = hann(2*M);
+window = window((end)/2 + 1:end);
 
-%figure
-%plot(window)
-
-phi_uu_windowed = fft(Ruu.*window);
-phi_yu_windowed = fft(Ryu.*window);
-
+phi_uu_windowed = fft(Ruu(1:M).*window);
+phi_yu_windowed = fft(Ryu(1:M).*window);
 G_windowed = phi_yu_windowed./phi_uu_windowed;
 
-sys_id_windowed = frd(G_windowed(1:floor(end/2)),omega_vec(1:floor(end/2)),Te);
+omega_vec_windowed = (omega_s./M).*(0:(M-1));
 
-%
+sys_id_windowed = frd(G_windowed(1:floor(end/2)),omega_vec_windowed(1:floor(end/2)),Te);
+
+%% 4
+
+m = 10;
+samples_per_group = N/m;
+
+window = hann(2*samples_per_group);
+window = window((end)/2 + 1:end);
+
+phi_uu_avg = zeros(samples_per_group,1);%initialiation
+phi_yu_avg = zeros(samples_per_group,1);%initialiation
+
+for i = 1:samples_per_group:N
+    U_period = U(i:i+samples_per_group-1);
+    y_period = y_sim(i:i+samples_per_group-1);
+
+    
+    Ruu = xcorr(U_period,U_period,'unbiased');
+    Ryu = xcorr(y_period,U_period,'unbiased');
+    
+    Ruu =  Ruu((end+1)/2:end);
+    Ryu =  Ryu((end+1)/2:end);
+    
+    phi_uu_avg = fft(Ruu.*window) + phi_uu_avg;
+    phi_yu_avg = fft(Ryu.*window) + phi_yu_avg;
+end
+
+phi_uu_avg = phi_uu_avg/m;
+phi_yu_avg = phi_yu_avg/m;
+
+G_windowed_avg = phi_yu_avg./phi_uu_avg;
+omega_vec_windowed_avg = (omega_s./samples_per_group).*(0:(samples_per_group-1));
+
+sys_id_windowed_avg = frd(G_windowed_avg(1:floor(end/2)),omega_vec_windowed_avg(1:floor(end/2)),Te);
+
+
+%% 5
 
 figure
-bode(sys_id,G,sys_id_windowed);
+bode(sys_id,G,sys_id_windowed,sys_id_windowed_avg);
+legend("id no window","theoretical","id windowed","id windowed avg")
 xlim([10^-1 inf])
-%

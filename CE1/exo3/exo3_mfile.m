@@ -50,6 +50,13 @@ plot(tt(1:K),g_fir)
 plot(t_d,y_d)
 plot(tt(1:K),g_reg(1:K))
 
+err_fir = y_d-g_fir;
+err_reg = y_d-g_reg(1:K);
+
+norm_err_fir = norm(err_fir,2)
+norm_err_reg = norm(err_reg,2)
+
+
 title("Impulse response")
 legend("Indentified response (FIR)","Ideal response (no saturation, no noise)","Indentified response (Regularisation)")
 xlabel("time [s]")

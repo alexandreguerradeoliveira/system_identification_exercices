@@ -28,7 +28,6 @@ Uprbs_fft_avg = 0;%initialiation
 y_fft_avg = 0;%initialiation
 N_one_period = N/p;
 
-
 number_periods_to_ignore = 1;
 
 for i = (1+number_periods_to_ignore*N_one_period):N_one_period:N
