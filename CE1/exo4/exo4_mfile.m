@@ -50,6 +50,13 @@ hold on
 plot(tt_sim,g_k_intcor)
 plot(tt_sim,g_k_matlab)
 plot(tt_sim,g_theory)
+
+err_intcor = g_theory-g_k_intcor;
+err_matlab = g_theory-g_k_matlab;
+
+err_norm_intcor = norm(err_intcor,2)
+err_norm_matlab = norm(err_matlab,2)
+
 title("Impulse response g(t)")
 xlabel("discrete time k")
 legend("Impulse reponse with intcor()","Impulse reponse with xcorr()","Theoretical impulse (no noise, no saturation)")
