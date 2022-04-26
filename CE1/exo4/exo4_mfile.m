@@ -14,9 +14,9 @@ out_step = sim('exo4.slx',tt(end));
 tt_sim = out_step.simout.Time;
 y_sim = out_step.simout.Data;
 
-% pick only the first period of the signal
+% pick only the last period of the signal
 M = 2^(8)-1; 
-Uprbs = Uprbs(7*M + 1:8*M); %demander si il faut vraiment prendre la derniere periode (so no ss)
+Uprbs = Uprbs(7*M + 1:8*M); 
 y_sim = y_sim(7*M + 1:8*M);
 tt_sim = tt_sim(1:M);
 
@@ -25,7 +25,7 @@ R_yu_intcor = intcor(y_sim,Uprbs);
 
 U_toeplitz_intcor = toeplitz(R_uu_intcor);
 
-g_k_intcor = inv(U_toeplitz_intcor)*(R_yu_intcor');
+g_k_intcor = pinv(U_toeplitz_intcor)*(R_yu_intcor');
 
 %% now with matlab
 
@@ -33,11 +33,17 @@ R_uu_matlab = xcorr(Uprbs,Uprbs);
 R_yu_matlab = xcorr(y_sim,Uprbs);
 
 %keep only the positive part of the correlations functions
+
 R_yu_matlab = R_yu_matlab((end+1)/2:end);
 R_uu_matlab = R_uu_matlab((end+1)/2:end);
 
 U_toeplitz_matlab =  toeplitz(R_uu_matlab);
-g_k_matlab =  inv(U_toeplitz_matlab)*R_yu_matlab;
+g_k_matlab =  pinv(U_toeplitz_matlab)*R_yu_matlab;
+
+plot(R_uu_matlab)
+
+figure
+% figure
 
 
 %% exact reponse of the system

@@ -5,11 +5,10 @@ N = 2000;
 sat_up = 0.5;
 Te = 0.1;
 
+U = rand(N,1)-0.5;
 
-U = rand(2000,1)-0.5;
 U(U<0)=-sat_up;
 U(U>0)=sat_up;
-%U = [U;zeros(50,1)]; padding
 
 tt = (0:Te:(size(U,1)-1)*Te)';
 
@@ -50,6 +49,14 @@ G = c2d(G,Te);
 M = 300;
 window = hann(2*M);
 window = window((end)/2 + 1:end);
+
+Ruu = xcorr(U,U,'unbiased');
+Ryu = xcorr(y_sim,U,'unbiased');
+
+%keep only the positive part of the correlations functions
+Ruu =  Ruu((end+1)/2:end);
+Ryu =  Ryu((end+1)/2:end);
+
 
 phi_uu_windowed = fft(Ruu(1:M).*window);
 phi_yu_windowed = fft(Ryu(1:M).*window);
@@ -98,5 +105,5 @@ sys_id_windowed_avg = frd(G_windowed_avg(1:floor(end/2)),omega_vec_windowed_avg(
 
 figure
 bode(sys_id,G,sys_id_windowed,sys_id_windowed_avg);
-legend("id no window","theoretical","id windowed","id windowed avg")
+legend("identified system without window","theoretical system","identified system with hann window","identified system with hann window averaged")
 xlim([10^-1 inf])

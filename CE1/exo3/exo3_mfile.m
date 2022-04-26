@@ -31,7 +31,7 @@ g_fir = inv((T')*(T))*((T')*y);
 
 %% ideal system (no noise, no saturation)
 sys_d = c2d(G,Te);
-[y_d,t_d] = impulse(sys_d*Te);
+[g_d,t_d] = impulse(sys_d*Te);
 
 %% part 5 [Regularisation]
 lambda = 2;
@@ -47,11 +47,11 @@ figure
 hold on
 
 plot(tt(1:K),g_fir)
-plot(t_d,y_d)
+plot(t_d,g_d)
 plot(tt(1:K),g_reg(1:K))
 
-err_fir = y_d-g_fir;
-err_reg = y_d-g_reg(1:K);
+err_fir = g_d-g_fir;
+err_reg = g_d-g_reg(1:K);
 
 norm_err_fir = norm(err_fir,2)
 norm_err_reg = norm(err_reg,2)
